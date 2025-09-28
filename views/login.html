@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Connexion</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="/public/styles.css" />
+</head>
+<body class="center-page">
+  <div class="card">
+    <h2>Connexion</h2>
+
+    <div id="msg" class="msg" style="display:none;"></div>
+
+    <form action="/login" method="POST" class="form">
+      <label>Email
+        <input type="email" name="email" required placeholder="ex: adjalamar85@gmail.com" />
+      </label>
+
+      <label>Mot de passe
+        <input type="password" name="password" required />
+      </label>
+
+      <button class="btn" type="submit">Se connecter</button>
+    </form>
+  </div>
+
+  <script>
+    function getQuery() {
+      const q = {};
+      location.search.substring(1).split("&").forEach(pair => {
+        if (!pair) return;
+        const [k,v] = pair.split("=");
+        q[decodeURIComponent(k)] = decodeURIComponent(v || "");
+      });
+      return q;
+    }
+    const q = getQuery();
+    const msgDiv = document.getElementById("msg");
+    if (q.error) {
+      msgDiv.textContent = q.error;
+      msgDiv.className = "msg error";
+      msgDiv.style.display = "block";
+    } else if (q.success) {
+      msgDiv.textContent = q.success;
+      msgDiv.className = "msg success";
+      msgDiv.style.display = "block";
+    }
+  </script>
+</body>
+</html>

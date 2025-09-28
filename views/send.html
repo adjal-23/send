@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Envoyer un email</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="/public/styles.css" />
+</head>
+<body class="page">
+  <div class="topbar">
+    <h2>Envoyer un email</h2>
+    <a class="btn danger" href="/logout">Se déconnecter</a>
+  </div>
+
+  <div class="container">
+    <div id="msg" class="msg" style="display:none;"></div>
+
+    <form action="/send" method="POST" class="form">
+      <label>Destinataires (séparés par une virgule)
+        <input type="text" name="to" required placeholder="ex: a@ex.com, b@ex.com" />
+      </label>
+
+      <label>Sujet
+        <input type="text" name="subject" required />
+      </label>
+
+      <label>Message
+        <textarea name="message" rows="8" required></textarea>
+      </label>
+
+      <button class="btn" type="submit">Envoyer</button>
+    </form>
+  </div>
+
+  <script>
+    function getQuery() {
+      const q = {};
+      location.search.substring(1).split("&").forEach(pair => {
+        if (!pair) return;
+        const [k,v] = pair.split("=");
+        q[decodeURIComponent(k)] = decodeURIComponent(v || "");
+      });
+      return q;
+    }
+    const q = getQuery();
+    const msgDiv = document.getElementById("msg");
+    if (q.error) {
+      msgDiv.textContent = q.error;
+      msgDiv.className = "msg error";
+      msgDiv.style.display = "block";
+    } else if (q.success) {
+      msgDiv.textContent = q.success;
+      msgDiv.className = "msg success";
+      msgDiv.style.display = "block";
+    }
+  </script>
+</body>
+</html>
