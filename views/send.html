@@ -7,29 +7,37 @@
   <link rel="stylesheet" href="/public/styles.css" />
 </head>
 <body class="page">
-  <div class="topbar">
+
+
+  <div class="container">
+
+       <div class="topbar">
     <h2>Envoyer un email</h2>
     <a class="btn danger" href="/logout">Se déconnecter</a>
   </div>
 
-  <div class="container">
     <div id="msg" class="msg" style="display:none;"></div>
 
-    <form action="/send" method="POST" class="form">
-      <label>Destinataires (séparés par une virgule)
-        <input type="text" name="to" required placeholder="ex: a@ex.com, b@ex.com" />
-      </label>
+   <form action="/send" method="POST" enctype="multipart/form-data">
+  <label>Destinataires (séparés par ,) :</label>
+  <input type="text" name="to" placeholder="ex: test1@gmail.com,test2@gmail.com">
 
-      <label>Sujet
-        <input type="text" name="subject" required />
-      </label>
+  <br><br>
+  <label>OU importer un fichier Excel/CSV :</label>
+  <input type="file" name="file" accept=".xlsx,.xls,.csv">
 
-      <label>Message
-        <textarea name="message" rows="8" required></textarea>
-      </label>
+  <br><br>
+  <label>Sujet :</label>
+  <input type="text" name="subject" required>
 
-      <button class="btn" type="submit">Envoyer</button>
-    </form>
+  <br><br>
+  <label>Message :</label>
+  <textarea name="message" required></textarea>
+
+  <br><br>
+  <button type="submit">Envoyer</button>
+</form>
+
   </div>
 
   <script>

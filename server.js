@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     user: ADMIN_EMAIL,
-    pass: "dlmq dlxx cdlo nwws" // ⚠️ mets ici ton mot de passe d’application Gmail...............
+    pass: "dlmq dlxx cdlo nwws" // code app
   }
 });
 
@@ -79,5 +79,52 @@ app.get("/logout", (req, res) => {
     res.redirect("/?success=" + encodeURIComponent("Déconnecté"));
   });
 });
+
+
+const multer = require("multer");
+const xlsx = require("xlsx");
+
+// إعداد مكان التخزين المؤقت للملفات
+const upload = multer({ dest: "uploads/" });
+app.post("/send", upload.single("file"), async (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/?error=" + encodeURIComponent("Veuillez vous connecter d'abord"));
+  }
+
+  let emails = [];
+
+  try {
+    // لو الملف مرفوع
+    if (req.file) {
+      const workbook = xlsx.readFile(req.file.path);
+      const sheetName = workbook.SheetNames[0];
+      const data = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 });
+
+      // نجمع الإيميلات من العمود الأول
+      emails = data.flat().map(e => String(e).trim()).filter(e => e.includes("@"));
+    } else {
+      // لو كتبهم يدوي
+      emails = req.body.to.split(",").map(e => e.trim()).filter(e => e.length > 0);
+    }
+
+    const { subject, message } = req.body;
+
+    for (let email of emails) {
+      await transporter.sendMail({
+        from: ADMIN_EMAIL,
+        to: email,
+        subject,
+        text: message
+      });
+    }
+
+    res.redirect("/send?success=" + encodeURIComponent("Emails envoyés avec succès ✅"));
+
+  } catch (err) {
+    console.error("Send error:", err);
+    res.redirect("/send?error=" + encodeURIComponent("Erreur lors de l’envoi ❌"));
+  }
+});
+
 
 app.listen(PORT, () => console.log(`🚀 Serveur en marche: http://localhost:${PORT}`));
