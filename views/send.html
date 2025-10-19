@@ -5,38 +5,46 @@
   <title>Envoyer un email</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link rel="stylesheet" href="/public/styles.css" />
+  <link rel="shortcut icon" href="/public/favicon.ico" type="image/x-icon">
 </head>
 <body class="page">
 
-
   <div class="container">
+<!--  -->
+    <div class="topbar">
+      <!-- <h2>Envoyer un email</h2> -->
+      <a class="btn danger" href="/logout">Se déconnecter</a>
+    </div>
 
-       <div class="topbar">
-    <h2>Envoyer un email</h2>
-    <a class="btn danger" href="/logout">Se déconnecter</a>
-  </div>
-
+    <!-- Message d'erreur ou succès -->
     <div id="msg" class="msg" style="display:none;"></div>
 
-   <form action="/send" method="POST" enctype="multipart/form-data">
-  <label>Destinataires (séparés par ,) :</label>
-  <input type="text" name="to" placeholder="ex: test1@gmail.com,test2@gmail.com">
+      <form action="/send" method="POST" enctype="multipart/form-data">
+      <label>Destinataires (séparés par ,) :</label>
+      <input type="text" name="to" placeholder="ex: test1@gmail.com,test2@gmail.com">
 
-  <br><br>
-  <label>OU importer un fichier Excel/CSV :</label>
-  <input type="file" name="file" accept=".xlsx,.xls,.csv">
+      <br><br>
 
-  <br><br>
-  <label>Sujet :</label>
-  <input type="text" name="subject" required>
+      <label> OU importer un fichier Excel/CSV : </label>
+      <input type="file" name="file" accept=".xlsx,.xls,.csv">
+             
 
-  <br><br>
-  <label>Message :</label>
-  <textarea name="message" required></textarea>
+      <br><br>
 
-  <br><br>
-  <button type="submit">Envoyer</button>
-</form>
+      
+      <label>Sujet :</label>
+      <input type="text" name="sujet" required>
+<br><br>
+
+      <label>Message :</label>
+      <textarea name="message" rows="6" required></textarea>
+
+      <br><br>
+      <button type="submit" class="btn">Envoyer</button>
+    </form>
+
+    <br>
+    <a href="/history" class="btn"> Voir l’historique</a>
 
   </div>
 
@@ -50,6 +58,7 @@
       });
       return q;
     }
+
     const q = getQuery();
     const msgDiv = document.getElementById("msg");
     if (q.error) {
@@ -62,5 +71,6 @@
       msgDiv.style.display = "block";
     }
   </script>
+
 </body>
 </html>

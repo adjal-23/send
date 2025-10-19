@@ -1,4 +1,4 @@
-/* ======== STYLE GLOBAL (Connexion + Send) ======== */
+/* ======== style (Connexion + Send) ======== */
 
 /* Reset */
 * {
@@ -78,8 +78,7 @@ textarea {
 }
 
 /* ----- BOUTONS ----- */
-button,
-.btn {
+button,.btn {
   background: #1e3c72;
   color: white;
   border: none;
@@ -91,8 +90,7 @@ button,
   transition: background 0.3s ease, transform 0.2s;
 }
 
-button:hover,
-.btn:hover {
+button:hover,.btn:hover {
   background: #2a5298;
   transform: scale(1.03);
 }
